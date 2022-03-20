@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
         btn_osv = (Button) findViewById(R.id.osv);
         btn_osv.setOnClickListener(this);
+
+
     }
 
 

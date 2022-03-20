@@ -11,7 +11,7 @@
         android:id="@+id/add_counterparty"
         android:layout_width="409dp"
         android:layout_height="50dp"
-        android:text="Добавить контрагента"
+        android:text="Контрагенты"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -20,8 +20,8 @@
 
     <Button
         android:id="@+id/add_materials_and_services"
-        android:layout_width="399dp"
-        android:layout_height="53dp"
+        android:layout_width="413dp"
+        android:layout_height="58dp"
         android:text="Добавить материалы и услуги"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
