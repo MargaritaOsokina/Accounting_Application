@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -23,7 +25,7 @@ public class MainActivity2 extends AppCompatActivity {
     EditText yearBox;
     Button delButton;
     Button saveButton;
-
+    Dialog dialog;
     DBHelper sqlHelper;
     SQLiteDatabase db;
     Cursor userCursor;
@@ -32,6 +34,13 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+
+        // Найдите элемент TextView внутри вашей разметки
+        // и установите ему соответствующий текст
+       // TextView text = (TextView) dialog.findViewById(R.id.);
+       // text.setText("Текст в диалоговом окне. Вы любите котов?");
+
 
         nameBox = findViewById(R.id.name);
         //yearBox = findViewById(R.id.year);
@@ -62,15 +71,23 @@ public class MainActivity2 extends AppCompatActivity {
 
     public void save(View view){
         ContentValues cv = new ContentValues();
-        cv.put(DBHelper.KEY_NAME2, nameBox.getText().toString());
-       // cv.put(DatabaseHelper.COLUMN_YEAR, Integer.parseInt(yearBox.getText().toString()));
-
-        if (userId > 0) {
-            db.update(DBHelper.TABLE_CONTACTS3, cv, DBHelper.KEY_ID2 + "=" + userId, null);
-        } else {
-            db.insert(DBHelper.TABLE_CONTACTS3, null, cv);
+        if (nameBox.getText().toString().equals(""))
+        {
+            CustomDialogFragment dialog = new CustomDialogFragment();
+            dialog.show(getSupportFragmentManager(), "custom");
         }
-        goHome();
+        else
+        {
+            cv.put(DBHelper.KEY_NAME2, nameBox.getText().toString());
+            // cv.put(DatabaseHelper.COLUMN_YEAR, Integer.parseInt(yearBox.getText().toString()));
+
+            if (userId > 0) {
+                db.update(DBHelper.TABLE_CONTACTS3, cv, DBHelper.KEY_ID2 + "=" + userId, null);
+            } else {
+                db.insert(DBHelper.TABLE_CONTACTS3, null, cv);
+            }
+            goHome();        }
+
     }
     public void delete(View view){
         db.delete(DBHelper.TABLE_CONTACTS3, "_id = ?", new String[]{String.valueOf(userId)});
