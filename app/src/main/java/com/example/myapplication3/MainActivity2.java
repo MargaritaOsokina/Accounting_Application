@@ -52,7 +52,7 @@ public class MainActivity2 extends AppCompatActivity {
                     DBHelper.KEY_ID2 + "=?", new String[]{String.valueOf(userId)});
             userCursor.moveToFirst();
             nameBox.setText(userCursor.getString(1));
-            yearBox.setText(String.valueOf(userCursor.getInt(2)));
+            //yearBox.setText(String.valueOf(userCursor.getInt(2)));
             userCursor.close();
         } else {
             // скрываем кнопку удаления
