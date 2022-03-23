@@ -16,9 +16,80 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class MainActivity2 extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity2 extends AppCompatActivity {
 
-    Button btnAdd, btnRead, btnClear;
+
+    EditText nameBox;
+    EditText yearBox;
+    Button delButton;
+    Button saveButton;
+
+    DBHelper sqlHelper;
+    SQLiteDatabase db;
+    Cursor userCursor;
+    long userId=0;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+
+        nameBox = findViewById(R.id.name);
+        //yearBox = findViewById(R.id.year);
+        delButton = findViewById(R.id.deleteButton);
+        saveButton = findViewById(R.id.saveButton);
+
+        sqlHelper = new DBHelper(this);
+        db = sqlHelper.getWritableDatabase();
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            userId = extras.getLong("id");
+        }
+        // если 0, то добавление
+        if (userId > 0) {
+            // получаем элемент по id из бд
+            userCursor = db.rawQuery("select * from " + DBHelper.TABLE_CONTACTS3 + " where " +
+                    DBHelper.KEY_ID2 + "=?", new String[]{String.valueOf(userId)});
+            userCursor.moveToFirst();
+            nameBox.setText(userCursor.getString(1));
+            yearBox.setText(String.valueOf(userCursor.getInt(2)));
+            userCursor.close();
+        } else {
+            // скрываем кнопку удаления
+            delButton.setVisibility(View.GONE);
+        }
+    }
+
+    public void save(View view){
+        ContentValues cv = new ContentValues();
+        cv.put(DBHelper.KEY_NAME2, nameBox.getText().toString());
+       // cv.put(DatabaseHelper.COLUMN_YEAR, Integer.parseInt(yearBox.getText().toString()));
+
+        if (userId > 0) {
+            db.update(DBHelper.TABLE_CONTACTS3, cv, DBHelper.KEY_ID2 + "=" + userId, null);
+        } else {
+            db.insert(DBHelper.TABLE_CONTACTS3, null, cv);
+        }
+        goHome();
+    }
+    public void delete(View view){
+        db.delete(DBHelper.TABLE_CONTACTS3, "_id = ?", new String[]{String.valueOf(userId)});
+        goHome();
+    }
+    private void goHome(){
+        // закрываем подключение
+        db.close();
+        // переход к главной activity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+
+
+}
+/*
+    Button btnAdd;//, btnRead, btnClear;
     EditText etCon;
     DBHelper dbHelper;
     @Override
@@ -29,11 +100,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
 
-        btnRead = (Button) findViewById(R.id.btnRead);
-        btnRead.setOnClickListener(this);
+      //  btnRead = (Button) findViewById(R.id.btnRead);
+      //  btnRead.setOnClickListener(this);
 
-        btnClear = (Button) findViewById(R.id.btnClear);
-        btnClear.setOnClickListener(this);
+       // btnClear = (Button) findViewById(R.id.btnClear);
+       // btnClear.setOnClickListener(this);
 
         etCon=(EditText) findViewById(R.id.etCon);
         //etEmail=(EditText) findViewById(R.id.etEmail);
@@ -58,7 +129,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 database2.insert(DBHelper.TABLE_CONTACTS3,null,contentValues);
 
                 break;
-            case R.id.btnRead:
+           case R.id.btnRead:
                 Cursor cursor = database2.query(DBHelper.TABLE_CONTACTS3,null,null,null,null,null,null);
 
                 if (cursor.moveToFirst()){
@@ -81,4 +152,4 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
         dbHelper.close();
 
     }
-}
+} */

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_counterparty:
-                Intent intent = new Intent(this, MainActivity2.class);
+                Intent intent = new Intent(this, CounterpartiesMenu.class);
                 startActivity(intent);
                 break;
             case R.id.add_materials_and_services:

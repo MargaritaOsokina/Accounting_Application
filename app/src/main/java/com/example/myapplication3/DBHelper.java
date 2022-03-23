@@ -1,14 +1,18 @@
 package com.example.myapplication3;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 
 public class DBHelper  extends SQLiteOpenHelper{
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "contactDb";
     public static final String TABLE_CONTACTS = "contacts";
     public static final String TABLE_CONTACTS3 = "contacts3";
@@ -19,9 +23,10 @@ public class DBHelper  extends SQLiteOpenHelper{
     public static final String KEY_MAIL = "mail";
 
 
-    public static final String KEY_ID2 = "_id2";
+    public static final String KEY_ID2 = "_id";
     public static final String KEY_NAME2 = "name2";
 
+    private SQLiteDatabase db;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,5 +56,21 @@ public class DBHelper  extends SQLiteOpenHelper{
         db.execSQL("drop table if exists " + TABLE_CONTACTS3);
         onCreate(db);
 
+    }
+    public List<String> selectAll() {
+        List<String> list = new ArrayList<String>();
+        Cursor cursor = this.db.query(TABLE_CONTACTS3, new String[] { "name" },
+                null, null, null, null, "name desc");
+
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(cursor.getString(0));
+
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        return list;
     }
 }

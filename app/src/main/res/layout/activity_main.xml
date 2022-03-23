@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/add_counterparty"
-        android:layout_width="409dp"
-        android:layout_height="50dp"
+        android:layout_width="388dp"
+        android:layout_height="44dp"
         android:text="Контрагенты"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -20,11 +20,11 @@
 
     <Button
         android:id="@+id/add_materials_and_services"
-        android:layout_width="413dp"
-        android:layout_height="58dp"
+        android:layout_width="381dp"
+        android:layout_height="53dp"
         android:text="Добавить материалы и услуги"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,11 +32,11 @@
 
     <Button
         android:id="@+id/write_off_of_materials"
-        android:layout_width="404dp"
-        android:layout_height="51dp"
+        android:layout_width="388dp"
+        android:layout_height="45dp"
         android:text="Списать материалы"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.695"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -44,8 +44,8 @@
 
     <Button
         android:id="@+id/osv"
-        android:layout_width="413dp"
-        android:layout_height="52dp"
+        android:layout_width="389dp"
+        android:layout_height="51dp"
         android:text="Оборотно-сальдовая ведомость"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
