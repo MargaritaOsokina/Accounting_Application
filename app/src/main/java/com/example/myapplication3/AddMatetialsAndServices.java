@@ -2,28 +2,41 @@ package com.example.myapplication3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class AddMatetialsAndServices extends AppCompatActivity implements View.OnClickListener {
 
     Button btnAdd, btnRead, btnClear;
-    EditText etName, etEmail;
+    EditText etName, etEmail,mDisplayDate;
     DBHelper dbHelper2;
     Spinner spinner;
     Cursor userCursor;
     SimpleCursorAdapter userAdapter;
+    CalendarView calender;
+    EditText eTxt;
    // DBHelper databaseHelper;
     SQLiteDatabase db;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,17 +56,30 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
 
          dbHelper2 = new DBHelper(this);
 
-        //Spinner spinner = (Spinner)findViewById(R.id.spinner);
-      // Spinner spinner = findViewById(R.id.spinner);
-      //  String selected = spinner.getSelectedItem().toString();
-       // Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT).show();
+        mDisplayDate = (EditText) findViewById(R.id.editDate);
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
 
-       // dbHelper2 = DBHelper.getReadableDatabase();
-       // Cursor cursor = dbHelper2.query("mytable", new String[]{"_id", "name"}, null, null, null, null, null);
-      //  Spinner = (Spinner)findViewById(R.id.spinner);
-       // SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, сursor, new String[] {"name"}, new int[] {android.R.id.text1});
-       // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-       // mSpinner.setAdapter(adapter);
+                DatePickerDialog dialog = new DatePickerDialog(AddMatetialsAndServices.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth, mDateSetListener, year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                String date = day + "/" + month + "/" + year;
+                mDisplayDate.setText(date);
+
+            }
+        };
     }
 
     @Override
