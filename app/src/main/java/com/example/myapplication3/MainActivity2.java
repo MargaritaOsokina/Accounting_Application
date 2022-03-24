@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.regex.Pattern;
+
 public class MainActivity2 extends AppCompatActivity {
 
 
@@ -71,7 +73,8 @@ public class MainActivity2 extends AppCompatActivity {
 
     public void save(View view){
         ContentValues cv = new ContentValues();
-        if (nameBox.getText().toString().equals(""))
+        if//(nameBox.getText().toString()!=("[a-zA-Z]"))
+        (nameBox.getText().toString().equals(""))
         {
             CustomDialogFragment dialog = new CustomDialogFragment();
             dialog.show(getSupportFragmentManager(), "custom");

@@ -10,12 +10,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 public class AddMatetialsAndServices extends AppCompatActivity implements View.OnClickListener {
 
     Button btnAdd, btnRead, btnClear;
     EditText etName, etEmail;
     DBHelper dbHelper2;
+    Spinner spinner;
+    Cursor userCursor;
+    SimpleCursorAdapter userAdapter;
+   // DBHelper databaseHelper;
+    SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +42,35 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
         etEmail=(EditText) findViewById(R.id.etEmail);
 
          dbHelper2 = new DBHelper(this);
+
+        //Spinner spinner = (Spinner)findViewById(R.id.spinner);
+      // Spinner spinner = findViewById(R.id.spinner);
+      //  String selected = spinner.getSelectedItem().toString();
+       // Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT).show();
+
+       // dbHelper2 = DBHelper.getReadableDatabase();
+       // Cursor cursor = dbHelper2.query("mytable", new String[]{"_id", "name"}, null, null, null, null, null);
+      //  Spinner = (Spinner)findViewById(R.id.spinner);
+       // SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, сursor, new String[] {"name"}, new int[] {android.R.id.text1});
+       // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+       // mSpinner.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // открываем подключение
+        db = dbHelper2.getReadableDatabase();
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+
+        //получаем данные из бд в виде курсора
+        userCursor = db.rawQuery("select * from " + DBHelper.TABLE_CONTACTS3, null);
+        // определяем, какие столбцы из курсора будут выводиться в ListView
+        String[] headers = new String[]{DBHelper.KEY_NAME2};
+        // создаем адаптер, передаем в него курсор
+        userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
+                userCursor, headers, new int[]{android.R.id.text1}, 0);
+        spinner.setAdapter(userAdapter);
     }
 
     @Override
