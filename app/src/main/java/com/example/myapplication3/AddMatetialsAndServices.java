@@ -9,9 +9,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
@@ -34,7 +37,11 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
     CalendarView calender;
     EditText eTxt;
    // DBHelper databaseHelper;
+   private int sNDS = 1;
+    private int sSch = 3;
     SQLiteDatabase db;
+    private Spinner spinnerNDS;
+    private Spinner spinnerSch;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     @Override
@@ -80,8 +87,74 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
 
             }
         };
-    }
+        spinnerNDS= (Spinner) findViewById(R.id.spinner2);
+        spinnerSch= (Spinner) findViewById(R.id.spinnerSch);
 
+        setupSpinner();
+        setupSpinnerSch();
+    }
+    private void setupSpinner() {
+
+        ArrayAdapter genderSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_gender_options, android.R.layout.simple_spinner_item);
+
+        genderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+        spinnerNDS.setAdapter(genderSpinnerAdapter);
+        spinnerNDS.setSelection(1);
+
+        spinnerNDS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selection)) {
+                    if (selection.equals(getString(R.string.without_NDS))) {
+                        sNDS = 0; // Без НДС
+                    } else if (selection.equals(getString(R.string.twenty_percent))) {
+                        sNDS = 1; // 20%
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                sNDS = 1; // Unknown
+            }
+        });
+    }
+    private void setupSpinnerSch() {
+
+        ArrayAdapter SchSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_account_options, android.R.layout.simple_spinner_item);
+
+        SchSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+        spinnerSch.setAdapter(SchSpinnerAdapter);
+        spinnerSch.setSelection(3);
+
+        spinnerSch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selection)) {
+                    if (selection.equals(getString(R.string.materials))) {
+                        sSch = 0; // Материалы
+                    } else if (selection.equals(getString(R.string.spare_parts))) {
+                        sSch = 1; // Запасные части
+                    }else if (selection.equals(getString(R.string.coveralls))) {
+                        sSch = 2; // Спецодежда
+                    }else if (selection.equals(getString(R.string.inventory))) {
+                        sSch = 3; // Инвентарь и хозяйственные принадлежности
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                sSch = 3; // Unknown
+            }
+        });
+    }
     @Override
     public void onResume() {
         super.onResume();

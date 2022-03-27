@@ -12,15 +12,18 @@ import androidx.annotation.Nullable;
 
 public class DBHelper  extends SQLiteOpenHelper{
 
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "contactDb";
     public static final String TABLE_CONTACTS = "contacts";
     public static final String TABLE_CONTACTS3 = "contacts3";
 
 
     public static final String KEY_ID = "_id";
+    public static final String KEY_DATE = "date";
+
     public static final String KEY_NAME = "name";
     public static final String KEY_MAIL = "mail";
+
 
 
     public static final String KEY_ID2 = "_id";

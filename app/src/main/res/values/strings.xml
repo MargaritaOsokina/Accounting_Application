@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">My Application3</string>
+
+    <string name="twenty_percent">20%</string>
+    <string name="without_NDS">Без НДС</string>
+    <string-array name="array_gender_options">
+        <item>@string/without_NDS</item>
+        <item>@string/twenty_percent</item>
+
+    </string-array>
+
+    <string name="materials">Материалы</string>
+    <string name="spare_parts">Запасные части</string>
+    <string name="coveralls">Спецодежда</string>
+    <string name="inventory">Инвентарь и хозяйственные принадлежности</string>
+
+    <string-array name="array_account_options">
+        <item>@string/materials</item>
+        <item>@string/spare_parts</item>
+        <item>@string/coveralls</item>
+        <item>@string/inventory</item>
+
+    </string-array>
+
+    <string name="app_name">"My App"</string>
 </resources>
