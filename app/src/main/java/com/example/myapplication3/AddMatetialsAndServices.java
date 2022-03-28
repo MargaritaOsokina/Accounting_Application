@@ -29,7 +29,7 @@ import java.util.Calendar;
 public class AddMatetialsAndServices extends AppCompatActivity implements View.OnClickListener {
 
     Button btnAdd, btnRead, btnClear;
-    EditText etName, etEmail,mDisplayDate;
+    EditText etName, etEmail,mDisplayDate, editTextPrice, editTextSum;
     DBHelper dbHelper2;
     Spinner spinner;
     Cursor userCursor;
@@ -60,6 +60,8 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
 
         etName=(EditText) findViewById(R.id.etName);
         etEmail=(EditText) findViewById(R.id.etEmail);
+        editTextPrice=(EditText) findViewById(R.id.editTextPrice);
+        editTextSum=(EditText) findViewById(R.id.editTextSum);
 
          dbHelper2 = new DBHelper(this);
 
@@ -176,6 +178,13 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
     public void onClick(View view) {
         String name = etName.getText().toString();
         String email = etEmail.getText().toString();
+        String date = mDisplayDate.getText().toString();
+       // String counter = mDisplayDate.getText().toString();//???
+        String sum = editTextSum.getText().toString();
+        String price = editTextPrice.getText().toString();
+       // String nds = textNDS.getText().toString();
+      //  String account = sSch.getText().toString();
+
 
         SQLiteDatabase database=dbHelper2.getWritableDatabase();
 
@@ -185,6 +194,12 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
             case R.id.btnAdd:
                 contentValues.put(DBHelper.KEY_NAME,name);
                 contentValues.put(DBHelper.KEY_MAIL,email);
+                contentValues.put(DBHelper.KEY_DATE, date);
+                contentValues.put(DBHelper.KEY_SUM,sum);
+                contentValues.put(DBHelper.KEY_PRICE,price);
+                contentValues.put(DBHelper.KEY_NDS,sNDS);
+                contentValues.put(DBHelper.KEY_ACCOUNT,sSch);
+
 
                 database.insert(DBHelper.TABLE_CONTACTS,null,contentValues);
 
@@ -196,8 +211,16 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
                     int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
                     int nameIndex = cursor.getColumnIndex(DBHelper.KEY_NAME);
                     int emailIndex = cursor.getColumnIndex(DBHelper.KEY_MAIL);
+                    int dateIndex = cursor.getColumnIndex(DBHelper.KEY_DATE);
+                    int sumIndex = cursor.getColumnIndex(DBHelper.KEY_SUM);
+                    int priceIndex = cursor.getColumnIndex(DBHelper.KEY_PRICE);
+                    int ndsIndex = cursor.getColumnIndex(DBHelper.KEY_NDS);
+                    int schIndex = cursor.getColumnIndex(DBHelper.KEY_ACCOUNT);
+
                     do {
-                        Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", email = " + cursor.getString(emailIndex));
+                        Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", email = " + cursor.getString(emailIndex)+
+                              " date-"+  cursor.getString(dateIndex)+" sum-"+cursor.getString(sumIndex)+cursor.getString(priceIndex)+" nds-"+cursor.getString(ndsIndex)
+                               +" sch-" +cursor.getString(schIndex));
                     } while (cursor.moveToNext());
                 }else
                     Log.d("mLog","0 rows");

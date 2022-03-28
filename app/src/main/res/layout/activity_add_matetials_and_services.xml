@@ -63,7 +63,7 @@
         android:text="Количество" />
 
     <EditText
-        android:id="@+id/editTextNumber2"
+        android:id="@+id/editTextSum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -76,7 +76,7 @@
         android:text="Цена (тариф) за единицу измерения" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/editTextPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
