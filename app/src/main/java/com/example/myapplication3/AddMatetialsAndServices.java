@@ -157,12 +157,21 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
             }
         });
     }
+
+
+
+
+
+
+
+
+
     @Override
     public void onResume() {
         super.onResume();
         // открываем подключение
         db = dbHelper2.getReadableDatabase();
-        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);///здесь
 
         //получаем данные из бд в виде курсора
         userCursor = db.rawQuery("select * from " + DBHelper.TABLE_CONTACTS3, null);
