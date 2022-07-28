@@ -39,6 +39,8 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
    // DBHelper databaseHelper;
    private int sNDS = 1;
     private int sSch = 3;
+    String item ="";
+    String itemSch="";
     SQLiteDatabase db;
     private Spinner spinnerNDS;
     private Spinner spinnerSch;
@@ -94,7 +96,9 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
 
         setupSpinner();
         setupSpinnerSch();
+
     }
+
     private void setupSpinner() {
 
         ArrayAdapter genderSpinnerAdapter = ArrayAdapter.createFromResource(this,
@@ -105,24 +109,25 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
         spinnerNDS.setAdapter(genderSpinnerAdapter);
         spinnerNDS.setSelection(1);
 
-        spinnerNDS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        TextView selection = findViewById(R.id.textCou);
+
+        //spinnerSch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selection = (String) parent.getItemAtPosition(position);
-                if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals(getString(R.string.without_NDS))) {
-                        sNDS = 0; // Без НДС
-                    } else if (selection.equals(getString(R.string.twenty_percent))) {
-                        sNDS = 1; // 20%
-                    }
-                }
+
+                // Получаем выбранный объект
+                itemSch = (String)parent.getItemAtPosition(position);
+               // selection.setText(itemSch);
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                sNDS = 1; // Unknown
             }
-        });
+        };
+
+        spinnerNDS.setOnItemSelectedListener(itemSelectedListener);
     }
     private void setupSpinnerSch() {
 
@@ -133,29 +138,25 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
 
         spinnerSch.setAdapter(SchSpinnerAdapter);
         spinnerSch.setSelection(3);
+        TextView selection = findViewById(R.id.textCou);
 
-        spinnerSch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selection = (String) parent.getItemAtPosition(position);
-                if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals(getString(R.string.materials))) {
-                        sSch = 0; // Материалы
-                    } else if (selection.equals(getString(R.string.spare_parts))) {
-                        sSch = 1; // Запасные части
-                    }else if (selection.equals(getString(R.string.coveralls))) {
-                        sSch = 2; // Спецодежда
-                    }else if (selection.equals(getString(R.string.inventory))) {
-                        sSch = 3; // Инвентарь и хозяйственные принадлежности
-                    }
+        //spinnerSch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    // Получаем выбранный объект
+                     item = (String)parent.getItemAtPosition(position);
+                    selection.setText(item);
+
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                sSch = 3; // Unknown
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            };
+
+        spinnerSch.setOnItemSelectedListener(itemSelectedListener);
     }
 
 
@@ -169,6 +170,7 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
     @Override
     public void onResume() {
         super.onResume();
+        TextView selection = findViewById(R.id.textCou);
         // открываем подключение
         db = dbHelper2.getReadableDatabase();
         Spinner spinner = (Spinner)findViewById(R.id.spinner);///здесь
@@ -181,6 +183,7 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
         userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
                 userCursor, headers, new int[]{android.R.id.text1}, 0);
         spinner.setAdapter(userAdapter);
+
     }
 
     @Override
@@ -201,13 +204,18 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
 
         switch (view.getId()){
             case R.id.btnAdd:
+                Spinner mySpinner=(Spinner) findViewById(R.id.spinner);
+                String text = mySpinner.getSelectedItem().toString();
+
                 contentValues.put(DBHelper.KEY_NAME,name);
+                contentValues.put(DBHelper.KEY_CO,text);
+
                 contentValues.put(DBHelper.KEY_MAIL,email);
                 contentValues.put(DBHelper.KEY_DATE, date);
                 contentValues.put(DBHelper.KEY_SUM,sum);
                 contentValues.put(DBHelper.KEY_PRICE,price);
-                contentValues.put(DBHelper.KEY_NDS,sNDS);
-                contentValues.put(DBHelper.KEY_ACCOUNT,sSch);
+                contentValues.put(DBHelper.KEY_NDS,item);
+                contentValues.put(DBHelper.KEY_ACCOUNT,itemSch);
 
 
                 database.insert(DBHelper.TABLE_CONTACTS,null,contentValues);
@@ -225,9 +233,10 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
                     int priceIndex = cursor.getColumnIndex(DBHelper.KEY_PRICE);
                     int ndsIndex = cursor.getColumnIndex(DBHelper.KEY_NDS);
                     int schIndex = cursor.getColumnIndex(DBHelper.KEY_ACCOUNT);
+                    int co = cursor.getColumnIndex(DBHelper.KEY_CO);
 
                     do {
-                        Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", email = " + cursor.getString(emailIndex)+
+                        Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", co - " + cursor.getString(co)+ ", email = " + cursor.getString(emailIndex)+
                               " date-"+  cursor.getString(dateIndex)+" sum-"+cursor.getString(sumIndex)+cursor.getString(priceIndex)+" nds-"+cursor.getString(ndsIndex)
                                +" sch-" +cursor.getString(schIndex));
                     } while (cursor.moveToNext());
