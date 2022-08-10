@@ -2,55 +2,79 @@ package com.example.myapplication3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class OSV extends AppCompatActivity {
-    DBHelper dbHelper2;
+
+
+    ListView userList;
+    DBHelper databaseHelper;
+    SQLiteDatabase db;
+    Cursor userCursor;
+    SimpleCursorAdapter userAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_osv);
-        dbHelper2 = new DBHelper(this);
-        SQLiteDatabase database=dbHelper2.getWritableDatabase();
-        String[] projection = {
-                DBHelper.KEY_NAME };
-        Cursor cursor = database.query(DBHelper.TABLE_CONTACTS,null,null,null,null,null,null);
+        setContentView(R.layout.activity_write_off_mat);
 
-        TextView displayTextView = (TextView) findViewById(R.id.textView1);
+        userList = findViewById(R.id.list);
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), SecondScreenWOM.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        });
 
-        if (cursor.moveToFirst()){
-            int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
-            int nameIndex = cursor.getColumnIndex(DBHelper.KEY_NAME);
-            int emailIndex = cursor.getColumnIndex(DBHelper.KEY_MAIL);
-            int dateIndex = cursor.getColumnIndex(DBHelper.KEY_DATE);
-            int sumIndex = cursor.getColumnIndex(DBHelper.KEY_SUM);
-            int priceIndex = cursor.getColumnIndex(DBHelper.KEY_PRICE);
-            int ndsIndex = cursor.getColumnIndex(DBHelper.KEY_NDS);
-            int schIndex = cursor.getColumnIndex(DBHelper.KEY_ACCOUNT);
-
-            do {
-
-                int currentID = cursor.getColumnIndex(DBHelper.KEY_ID);
-                int currentName = cursor.getColumnIndex(DBHelper.KEY_NAME);
-                int currentCity = cursor.getColumnIndex(DBHelper.KEY_MAIL);
-                int currentGender = cursor.getColumnIndex(DBHelper.KEY_DATE);
-                int currentAge = cursor.getColumnIndex(DBHelper.KEY_SUM);
-                int wqw = cursor.getColumnIndex(DBHelper.KEY_PRICE);
-                int ee = cursor.getColumnIndex(DBHelper.KEY_NDS);
-                int ss = cursor.getColumnIndex(DBHelper.KEY_ACCOUNT);
-                // Выводим значения каждого столбца
-                displayTextView.append(("ID = " + cursor.getInt(idIndex) + ",\n name - " + cursor.getString(nameIndex) + ",\n email = " + cursor.getString(emailIndex)+
-                        " \n date-"+  cursor.getString(dateIndex)+" \n sum-"+cursor.getString(sumIndex)+cursor.getString(priceIndex)+"\n nds-"+cursor.getString(ndsIndex)
-                        +" \n sch-" +cursor.getString(schIndex)+"\n\n"));
-            } while (cursor.moveToNext());
-        }else
-            Log.d("mLog","0 rows");
-
-        cursor.close();
+        databaseHelper = new DBHelper(getApplicationContext());
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // открываем подключение
+        db = databaseHelper.getReadableDatabase();
+
+        //получаем данные из бд в виде курсора
+        userCursor = db.rawQuery("select * from " + DBHelper.TABLE_CONTACTS, null);
+        // определяем, какие столбцы из курсора будут выводиться в ListView
+        String[] headers = new String[]{DBHelper.KEY_NAME};
+        // создаем адаптер, передаем в него курсор
+        userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
+                userCursor, headers, new int[]{android.R.id.text1}, 0);
+        userList.setAdapter(userAdapter);
+        int nameColumnIndex = userCursor.getColumnIndex(DBHelper.KEY_NAME);
+        String currentName = userCursor.getString(nameColumnIndex);
+
+      // nameBox.setText(currentName+"\n"+currentCity+"\n"+currentMail+"\n"+
+        //        currentSum+"\n"+currentDate+"\n"+currentPrice+"\n"+currentNDS+"\n"+currentAccount);
+    }
+
+    // по нажатию на кнопку запускаем UserActivity для добавления данных
+    public void add(View view) {
+        Intent intent = new Intent(this, SecondScreenWOM.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Закрываем подключение и курсор
+        db.close();
+        userCursor.close();
+    }
+
+
 
 }

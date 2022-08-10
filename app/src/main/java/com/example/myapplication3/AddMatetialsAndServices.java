@@ -2,6 +2,7 @@ package com.example.myapplication3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -39,8 +40,11 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
    // DBHelper databaseHelper;
    private int sNDS = 1;
     private int sSch = 3;
+    Cursor   itemCu;
+    int noteID;
     String item ="";
     String itemSch="";
+    String itemK="";
     SQLiteDatabase db;
     private Spinner spinnerNDS;
     private Spinner spinnerSch;
@@ -183,7 +187,25 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
         userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
                 userCursor, headers, new int[]{android.R.id.text1}, 0);
         spinner.setAdapter(userAdapter);
+        AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("Range")
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                // Получаем выбранный объект
+               // itemK = (String) parent.getItemAtPosition(position);
+               // selection.setText(itemK);
+                itemCu = (Cursor) parent.getItemAtPosition(position);
+                 itemK = itemCu.getString(itemCu.getColumnIndex(DBHelper.KEY_NAME2));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+
+        spinner.setOnItemSelectedListener(itemSelectedListener);
     }
 
     @Override
@@ -208,7 +230,7 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
                 String text = mySpinner.getSelectedItem().toString();
 
                 contentValues.put(DBHelper.KEY_NAME,name);
-                contentValues.put(DBHelper.KEY_CO,text);
+                contentValues.put(DBHelper.KEY_CO, String.valueOf(itemK));
 
                 contentValues.put(DBHelper.KEY_MAIL,email);
                 contentValues.put(DBHelper.KEY_DATE, date);
