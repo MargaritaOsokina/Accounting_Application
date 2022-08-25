@@ -1,6 +1,7 @@
 package com.example.myapplication3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.contentpager.content.Query;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -26,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+
+import static com.example.myapplication3.DBHelper.TABLE_CONTACTS;
 
 public class AddMatetialsAndServices extends AppCompatActivity implements View.OnClickListener {
 
@@ -207,6 +210,9 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
 
         spinner.setOnItemSelectedListener(itemSelectedListener);
     }
+   // void sq()
+   // {
+   //     db.execSQL("select * from " + DBHelper.KEY_CO +" AS "+DBHelper.TABLE_CONTACTS+","+ DBHelper.KEY_NAME2+" AS "+ DBHelper.TABLE_CONTACTS3 +","+ DBHelper.KEY_DEB+ "FROM"+ DBHelper.TABLE_CONTACTS3+ "INNER JOIN "+DBHelper.TABLE_CONTACTS3+ "ON"+ DBHelper.TABLE_CONTACTS. contacts.contacts3Id = contacts3._id +"WHERE ( contacts3Id , debit) IN (   SELECT contacts3Id, MAX(debit) FROM contacts GROUP BY contacts3Id)");}
 
     @Override
     public void onClick(View view) {
@@ -223,11 +229,12 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
         SQLiteDatabase database=dbHelper2.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-
+        ContentValues contentValues2 = new ContentValues();
         switch (view.getId()){
             case R.id.btnAdd:
                 Spinner mySpinner=(Spinner) findViewById(R.id.spinner);
                 String text = mySpinner.getSelectedItem().toString();
+int totalAmount= Integer.parseInt(price)*Integer.parseInt(sum);
 
                 contentValues.put(DBHelper.KEY_NAME,name);
                 contentValues.put(DBHelper.KEY_CO, String.valueOf(itemK));
@@ -238,13 +245,19 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
                 contentValues.put(DBHelper.KEY_PRICE,price);
                 contentValues.put(DBHelper.KEY_NDS,item);
                 contentValues.put(DBHelper.KEY_ACCOUNT,itemSch);
+             //   sq();
+                userCursor = db.rawQuery("select * from " + TABLE_CONTACTS + " where " +
+                        DBHelper.KEY_CO + "=?", new String[]{String.valueOf("mn")});
 
 
-                database.insert(DBHelper.TABLE_CONTACTS,null,contentValues);
+                    database.insert(DBHelper.TABLE_CONTACTS,null,contentValues);
+                contentValues2.put(DBHelper.KEY_DEB,totalAmount);
+                database.insert(DBHelper.TABLE_CONTACTS3,null,contentValues2);
 
                 break;
             case R.id.btnRead:
                 Cursor cursor = database.query(DBHelper.TABLE_CONTACTS,null,null,null,null,null,null);
+                Cursor cursor2 = database.query(DBHelper.TABLE_CONTACTS,null,null,null,null,null,null);
 
                 if (cursor.moveToFirst()){
                     int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
@@ -256,10 +269,10 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
                     int ndsIndex = cursor.getColumnIndex(DBHelper.KEY_NDS);
                     int schIndex = cursor.getColumnIndex(DBHelper.KEY_ACCOUNT);
                     int co = cursor.getColumnIndex(DBHelper.KEY_CO);
-
+                    //int tA = cursor2.getColumnIndex(DBHelper.KEY_DEB);
                     do {
                         Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", co - " + cursor.getString(co)+ ", email = " + cursor.getString(emailIndex)+
-                              " date-"+  cursor.getString(dateIndex)+" sum-"+cursor.getString(sumIndex)+cursor.getString(priceIndex)+" nds-"+cursor.getString(ndsIndex)
+                              " date-"+  cursor.getString(dateIndex)+" sum-"+cursor.getString(sumIndex)+" price-"+cursor.getString(priceIndex)+" nds-"+cursor.getString(ndsIndex)
                                +" sch-" +cursor.getString(schIndex));
                     } while (cursor.moveToNext());
                 }else

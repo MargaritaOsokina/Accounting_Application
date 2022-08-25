@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 public class DBHelper  extends SQLiteOpenHelper{
 
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
     public static final String DATABASE_NAME = "contactDb";
     public static final String TABLE_CONTACTS = "contacts";
     public static final String TABLE_CONTACTS3 = "contacts3";
@@ -34,6 +34,8 @@ public class DBHelper  extends SQLiteOpenHelper{
 
     public static final String KEY_ID2 = "_id";
     public static final String KEY_NAME2 = "name2";
+    public static final String KEY_DEB = "debit";
+    public static final String KEY_CRED = "credit";
 
     private SQLiteDatabase db;
 
@@ -45,7 +47,7 @@ public class DBHelper  extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
 
        db.execSQL("create table " + TABLE_CONTACTS3 + "(" + KEY_ID2
-               + " integer primary key," + KEY_NAME2  + " text" + ")");
+               + " integer primary key," + KEY_NAME2  + " text," +KEY_DEB  + " text," +KEY_CRED  + " text" + ")");
 
         db.execSQL("create table " + TABLE_CONTACTS + "(" + KEY_ID
                 + " integer primary key," + KEY_NAME + " text," + KEY_MAIL + " text,"+ KEY_CO + " text,"

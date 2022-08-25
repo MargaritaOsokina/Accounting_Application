@@ -24,6 +24,7 @@ public class MainActivity2 extends AppCompatActivity {
 
 
     EditText nameBox;
+    DBHelper dbHelper2;
     EditText yearBox;
     Button delButton;
     Button saveButton;
@@ -72,6 +73,29 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     public void save(View view){
+        dbHelper2 = new DBHelper(this);
+        SQLiteDatabase database=dbHelper2.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        //database.insert(DBHelper.TABLE_CONTACTS3,null,contentValues);
+
+        Cursor cursor = database.query(DBHelper.TABLE_CONTACTS3,null,null,null,null,null,null);
+
+        if (cursor.moveToFirst()){
+            int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID2);
+            int nameIndex = cursor.getColumnIndex(DBHelper.KEY_NAME2);
+            int emailIndex = cursor.getColumnIndex(DBHelper.KEY_DEB);
+            int dateIndex = cursor.getColumnIndex(DBHelper.KEY_CRED);
+
+
+            do {
+                Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", deb - " + cursor.getString(emailIndex)+ ", cred = " + cursor.getString(dateIndex)
+                       );
+            } while (cursor.moveToNext());
+        }else
+            Log.d("mLog","0 rows");
+
+        cursor.close();
+
         ContentValues cv = new ContentValues();
         if//(nameBox.getText().toString()!=("[a-zA-Z]"))
         (nameBox.getText().toString().equals(""))
@@ -82,6 +106,8 @@ public class MainActivity2 extends AppCompatActivity {
         else
         {
             cv.put(DBHelper.KEY_NAME2, nameBox.getText().toString());
+            cv.put(DBHelper.KEY_DEB, "0");
+            cv.put(DBHelper.KEY_CRED, "0");
             // cv.put(DatabaseHelper.COLUMN_YEAR, Integer.parseInt(yearBox.getText().toString()));
 
             if (userId > 0) {
