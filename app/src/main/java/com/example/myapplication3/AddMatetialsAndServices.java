@@ -28,7 +28,16 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import static com.example.myapplication3.DBHelper.KEY_CO;
+import static com.example.myapplication3.DBHelper.KEY_DEB;
+import static com.example.myapplication3.DBHelper.KEY_ID;
+import static com.example.myapplication3.DBHelper.KEY_ID2;
+import static com.example.myapplication3.DBHelper.KEY_NAME;
+import static com.example.myapplication3.DBHelper.KEY_NAME2;
+import static com.example.myapplication3.DBHelper.KEY_PRICE;
+import static com.example.myapplication3.DBHelper.KEY_SUM;
 import static com.example.myapplication3.DBHelper.TABLE_CONTACTS;
+import static com.example.myapplication3.DBHelper.TABLE_CONTACTS3;
 
 public class AddMatetialsAndServices extends AppCompatActivity implements View.OnClickListener {
 
@@ -183,9 +192,9 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
         Spinner spinner = (Spinner)findViewById(R.id.spinner);///здесь
 
         //получаем данные из бд в виде курсора
-        userCursor = db.rawQuery("select * from " + DBHelper.TABLE_CONTACTS3, null);
+        userCursor = db.rawQuery("select * from " + TABLE_CONTACTS3, null);
         // определяем, какие столбцы из курсора будут выводиться в ListView
-        String[] headers = new String[]{DBHelper.KEY_NAME2};
+        String[] headers = new String[]{KEY_NAME2};
         // создаем адаптер, передаем в него курсор
         userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
                 userCursor, headers, new int[]{android.R.id.text1}, 0);
@@ -199,7 +208,7 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
                // itemK = (String) parent.getItemAtPosition(position);
                // selection.setText(itemK);
                 itemCu = (Cursor) parent.getItemAtPosition(position);
-                 itemK = itemCu.getString(itemCu.getColumnIndex(DBHelper.KEY_NAME2));
+                 itemK = itemCu.getString(itemCu.getColumnIndex(KEY_NAME2));
 
             }
 
@@ -229,15 +238,53 @@ public class AddMatetialsAndServices extends AppCompatActivity implements View.O
         SQLiteDatabase database=dbHelper2.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        ContentValues contentValues2 = new ContentValues();
+       // ContentValues contentValues2 = new ContentValues();
         switch (view.getId()){
             case R.id.btnAdd:
+                Spinner mySpinner=(Spinner) findViewById(R.id.spinner);
+                String text = mySpinner.getSelectedItem().toString();
+
+                contentValues.put(KEY_NAME,name);
+                contentValues.put(DBHelper.KEY_CO, String.valueOf(itemK));
+
+                contentValues.put(DBHelper.KEY_MAIL,email);
+                contentValues.put(DBHelper.KEY_DATE, date);
+                contentValues.put(DBHelper.KEY_SUM,sum);
+                contentValues.put(DBHelper.KEY_PRICE,price);
+                contentValues.put(DBHelper.KEY_NDS,item);
+                contentValues.put(DBHelper.KEY_ACCOUNT,itemSch);
+
+
+                database.insert(DBHelper.TABLE_CONTACTS,null,contentValues);
+                //String strSQL = "UPDATE contacts3 SET debit = "+String.valueOf(Integer.valueOf(sum)*Integer.valueOf(price))+" WHERE name2 = "+ itemK;
+                //Получение данных из таблицы TABLE_CONTACTS3, если контрагенты совпадают
+                userCursor = db.rawQuery("select * from " + TABLE_CONTACTS3 + " where " +
+                        DBHelper.KEY_NAME2 + "=?", new String[]{itemK});
+                userCursor.moveToFirst();
+                int nameColumnIndex = userCursor.getColumnIndex(KEY_DEB);
+                String currentName = userCursor.getString(nameColumnIndex);
+
+
+               // userCursor.moveToFirst();
+               // подготовим значения для обновления
+                ContentValues cv = new ContentValues();
+                cv.put("debit", Integer.valueOf(currentName)+(Integer.valueOf(sum)*Integer.valueOf(price)));
+
+                // обновляем по TABLE_CONTACTS3
+                db.update("contacts3", cv, "name2 = ?",
+                        new String[] { itemK });
+
+                //db.execSQL(strSQL);
+              //  db.execSQL("update " + TABLE_CONTACTS3 + " set " + KEY_DEB + "=" + String.valueOf(Integer.valueOf(sum)*Integer.valueOf(price)) + " where " + KEY_NAME2 + " = " + itemK);
+
+                break;
+                /*
                 Spinner mySpinner=(Spinner) findViewById(R.id.spinner);
                 String text = mySpinner.getSelectedItem().toString();
 int totalAmount= Integer.parseInt(price)*Integer.parseInt(sum);
 
                 contentValues.put(DBHelper.KEY_NAME,name);
-                contentValues.put(DBHelper.KEY_CO, String.valueOf(itemK));
+                contentValues.put(KEY_CO, String.valueOf(itemK));
 
                 contentValues.put(DBHelper.KEY_MAIL,email);
                 contentValues.put(DBHelper.KEY_DATE, date);
@@ -247,29 +294,29 @@ int totalAmount= Integer.parseInt(price)*Integer.parseInt(sum);
                 contentValues.put(DBHelper.KEY_ACCOUNT,itemSch);
              //   sq();
                 userCursor = db.rawQuery("select * from " + TABLE_CONTACTS + " where " +
-                        DBHelper.KEY_CO + "=?", new String[]{String.valueOf("mn")});
-
+                        KEY_CO + "=?", new String[]{String.valueOf("mn")});
 
                     database.insert(DBHelper.TABLE_CONTACTS,null,contentValues);
-                contentValues2.put(DBHelper.KEY_DEB,totalAmount);
-                database.insert(DBHelper.TABLE_CONTACTS3,null,contentValues2);
+               // contentValues2.put(DBHelper.KEY_DEB,totalAmount);
+                //database.insert(DBHelper.TABLE_CONTACTS3,null,contentValues2);
 
-                break;
+                break;*/
             case R.id.btnRead:
                 Cursor cursor = database.query(DBHelper.TABLE_CONTACTS,null,null,null,null,null,null);
                 Cursor cursor2 = database.query(DBHelper.TABLE_CONTACTS,null,null,null,null,null,null);
 
                 if (cursor.moveToFirst()){
-                    int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
-                    int nameIndex = cursor.getColumnIndex(DBHelper.KEY_NAME);
+                    int idIndex = cursor.getColumnIndex(KEY_ID);
+                    int nameIndex = cursor.getColumnIndex(KEY_NAME);
                     int emailIndex = cursor.getColumnIndex(DBHelper.KEY_MAIL);
                     int dateIndex = cursor.getColumnIndex(DBHelper.KEY_DATE);
                     int sumIndex = cursor.getColumnIndex(DBHelper.KEY_SUM);
                     int priceIndex = cursor.getColumnIndex(DBHelper.KEY_PRICE);
                     int ndsIndex = cursor.getColumnIndex(DBHelper.KEY_NDS);
                     int schIndex = cursor.getColumnIndex(DBHelper.KEY_ACCOUNT);
-                    int co = cursor.getColumnIndex(DBHelper.KEY_CO);
+                    int co = cursor.getColumnIndex(KEY_CO);
                     //int tA = cursor2.getColumnIndex(DBHelper.KEY_DEB);
+
                     do {
                         Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", co - " + cursor.getString(co)+ ", email = " + cursor.getString(emailIndex)+
                               " date-"+  cursor.getString(dateIndex)+" sum-"+cursor.getString(sumIndex)+" price-"+cursor.getString(priceIndex)+" nds-"+cursor.getString(ndsIndex)

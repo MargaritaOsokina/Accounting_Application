@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import static com.example.myapplication3.DBHelper.KEY_DEB;
 import static com.example.myapplication3.DBHelper.TABLE_CONTACTS;
 import static com.example.myapplication3.DBHelper.TABLE_CONTACTS3;
 
@@ -50,22 +51,33 @@ public class OSV extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        nameBox = findViewById(R.id.name);
+        db = databaseHelper.getReadableDatabase();
+
+        //получаем данные из бд в виде курсора
+        userCursor = db.rawQuery("select * from " + DBHelper.TABLE_CONTACTS3, null);
+        // определяем, какие столбцы из курсора будут выводиться в ListView
+        String[] headers = new String[]{DBHelper.KEY_NAME2,KEY_DEB};
+        // создаем адаптер, передаем в него курсор
+        userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
+                userCursor, headers, new int[]{android.R.id.text1,android.R.id.text2}, 0);
+        userList.setAdapter(userAdapter);
+            // скрываем кнопку удаления
+       // nameBox = findViewById(R.id.name);
         //yearBox = findViewById(R.id.year);
 
-        sqlHelper = new DBHelper(this);
-        db = sqlHelper.getWritableDatabase();
+      //  sqlHelper = new DBHelper(this);
+       // db = sqlHelper.getWritableDatabase();
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            userId = extras.getLong("id");
-        }
-        userId=1;
+       // Bundle extras = getIntent().getExtras();
+       // if (extras != null) {
+        //    userId = extras.getLong("id");
+       // }
+       // userId=1;
 
-            userCursor = db.rawQuery("select * from " + TABLE_CONTACTS + " where " +
-                    DBHelper.KEY_NAME + "=?", new String[]{String.valueOf("mn")});
+         //   userCursor = db.rawQuery("select * from " + TABLE_CONTACTS + " where " +
+          //          DBHelper.KEY_NAME + "=?", new String[]{String.valueOf("mn")});
 
-            userCursor.moveToFirst();
+          //  userCursor.moveToFirst();
             // nameBox.setText(userCursor.getString(1));
           /*  int nameColumnIndex = userCursor.getColumnIndex(DBHelper.KEY_NAME);
             int counterpartiesColumnIndex = userCursor.getColumnIndex(DBHelper.KEY_CO);
