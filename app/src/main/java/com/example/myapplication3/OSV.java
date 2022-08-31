@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import static com.example.myapplication3.DBHelper.KEY_CRED;
 import static com.example.myapplication3.DBHelper.KEY_DEB;
 import static com.example.myapplication3.DBHelper.TABLE_CONTACTS;
 import static com.example.myapplication3.DBHelper.TABLE_CONTACTS3;
@@ -54,12 +55,12 @@ public class OSV extends AppCompatActivity {
         db = databaseHelper.getReadableDatabase();
 
         //получаем данные из бд в виде курсора
-        userCursor = db.rawQuery("select * from " + DBHelper.TABLE_CONTACTS3, null);
+        userCursor = db.rawQuery("select * from " + TABLE_CONTACTS3, null);
         // определяем, какие столбцы из курсора будут выводиться в ListView
-        String[] headers = new String[]{DBHelper.KEY_NAME2,KEY_DEB};
+        String[] headers = new String[]{DBHelper.KEY_NAME2,KEY_DEB,KEY_CRED};
         // создаем адаптер, передаем в него курсор
-        userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
-                userCursor, headers, new int[]{android.R.id.text1,android.R.id.text2}, 0);
+        userAdapter = new SimpleCursorAdapter(this, R.layout.three,
+                userCursor, headers, new int[]{R.id.text_view_member_id,R.id.text_view_name,R.id.text_view_phone}, 0);
         userList.setAdapter(userAdapter);
             // скрываем кнопку удаления
        // nameBox = findViewById(R.id.name);

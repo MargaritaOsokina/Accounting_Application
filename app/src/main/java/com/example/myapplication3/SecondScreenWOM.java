@@ -15,7 +15,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import static com.example.myapplication3.DBHelper.KEY_CRED;
+import static com.example.myapplication3.DBHelper.KEY_DEB;
 import static com.example.myapplication3.DBHelper.TABLE_CONTACTS;
+import static com.example.myapplication3.DBHelper.TABLE_CONTACTS3;
 
 public class SecondScreenWOM extends AppCompatActivity {
 
@@ -28,6 +31,9 @@ public class SecondScreenWOM extends AppCompatActivity {
     DBHelper sqlHelper;
     SQLiteDatabase db;
     Cursor userCursor;
+    Cursor userCursor2;
+    Cursor userCursor3;
+
     long userId=0;
     SimpleCursorAdapter userAdapter;
     ListView userList;
@@ -107,7 +113,38 @@ public class SecondScreenWOM extends AppCompatActivity {
 
 
     public void delete(View view){
+
+        userCursor2 = db.rawQuery("select * from " + TABLE_CONTACTS + " where " +
+                DBHelper.KEY_ID + "=?", new String[]{String.valueOf(userId)});
+        userCursor2.moveToFirst();
+        // nameBox.setText(userCursor.getString(1));
+        int counterpartiesColumnIndex = userCursor.getColumnIndex(DBHelper.KEY_CO);
+        int sumColumnIndex = userCursor2.getColumnIndex(DBHelper.KEY_SUM);
+        int priceColumnIndex = userCursor2.getColumnIndex(DBHelper.KEY_PRICE);
+
+        String currentCity = userCursor2.getString(counterpartiesColumnIndex);
+        String currentSum = userCursor2.getString(sumColumnIndex);
+        String currentPrice = userCursor2.getString(priceColumnIndex);
+
+
+        userCursor3 = db.rawQuery("select * from " + TABLE_CONTACTS3 + " where " +
+                DBHelper.KEY_NAME2 + "=?", new String[]{currentCity});
+        userCursor3.moveToFirst();
+
+        int nameColumnIndex2 = userCursor3.getColumnIndex(KEY_CRED);
+        String currentName2 = userCursor3.getString(nameColumnIndex2);
+
+        // userCursor.moveToFirst();
+        // подготовим значения для обновления
+        ContentValues cv = new ContentValues();
+        cv.put("credit", Integer.valueOf(currentName2)+(Integer.valueOf(currentSum)*Integer.valueOf(currentPrice)));
+
+        // обновляем по TABLE_CONTACTS3
+        db.update("contacts3", cv, "name2 = ?",
+                new String[] { currentCity });
         db.delete(TABLE_CONTACTS, "_id = ?", new String[]{String.valueOf(userId)});
+
+
         goHome();
     }
     private void goHome(){
