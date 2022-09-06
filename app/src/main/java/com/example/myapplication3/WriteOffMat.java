@@ -8,8 +8,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+
+import java.lang.reflect.Array;
+
+import static com.example.myapplication3.DBHelper.KEY_DATE;
+import static com.example.myapplication3.DBHelper.KEY_NAME;
+import static com.example.myapplication3.DBHelper.KEY_PRICE;
+import static com.example.myapplication3.DBHelper.KEY_SUM;
 
 public class WriteOffMat extends AppCompatActivity {
 
@@ -19,6 +27,8 @@ public class WriteOffMat extends AppCompatActivity {
     SQLiteDatabase db;
     Cursor userCursor;
     SimpleCursorAdapter userAdapter;
+    SimpleCursorAdapter userAdapter2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +55,21 @@ public class WriteOffMat extends AppCompatActivity {
         db = databaseHelper.getReadableDatabase();
 
         //получаем данные из бд в виде курсора
-        userCursor = db.rawQuery("select * from " + DBHelper.TABLE_CONTACTS, null);
+        userCursor = db.rawQuery("select * from " + DBHelper.TABLE_MAT, null);
         // определяем, какие столбцы из курсора будут выводиться в ListView
-        String[] headers = new String[]{DBHelper.KEY_NAME};
+        String[] headers = new String[]{KEY_DATE,KEY_NAME,KEY_SUM,KEY_PRICE};
         // создаем адаптер, передаем в него курсор
-        userAdapter = new SimpleCursorAdapter(this, android.R.layout.two_line_list_item,
-                userCursor, headers, new int[]{android.R.id.text1}, 0);
+        userAdapter = new SimpleCursorAdapter(this, R.layout.four,
+                userCursor, headers, new int[]{R.id.text_date,R.id.text_mail,R.id.text_sum,R.id.text_price}, 0);
         userList.setAdapter(userAdapter);
+        //String[] info = {"дата","наименование","количество","стоимость"};
+        //userAdapter = new SimpleCursorAdapter(this, R.layout.four,
+          //      userCursor, info, new int[]{R.id.text_date,R.id.text_mail,R.id.text_sum,R.id.text_price}, 0);
+        //userList.setAdapter(userAdapter);
+       // ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.four, []{R.id.text_date,R.id.text_mail,R.id.text_sum,R.id.text_price}, info);
+                //this, R.layout.four,
+              //  userCursor, info, new int[]{R.id.text_date,R.id.text_mail,R.id.text_sum,R.id.text_price}, 0);
+      //  userList.setAdapter(adapter);
     }
 
     // по нажатию на кнопку запускаем UserActivity для добавления данных

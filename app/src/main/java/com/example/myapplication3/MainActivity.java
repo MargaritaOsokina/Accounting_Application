@@ -11,10 +11,10 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity implements OnClickListener{
 
 
-    Button btn_add_count;
-    Button btn_add_mat_and_serv;
-    Button btn_write_off_of_materials;
-    Button btn_osv;
+    Button btnAddCount;
+    Button btnAddMatAndServ;
+    Button btnWriteOffOfMaterials;
+    Button btnOsv;
 
 
     /** Called when the activity is first created. */
@@ -23,17 +23,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn_add_count = (Button) findViewById(R.id.add_counterparty);
-        btn_add_count.setOnClickListener(this);
+        btnAddCount = (Button) findViewById(R.id.add_counterparty);
+        btnAddCount.setOnClickListener(this);
 
-        btn_add_mat_and_serv = (Button) findViewById(R.id.add_materials_and_services);
-        btn_add_mat_and_serv.setOnClickListener(this);
+        btnAddMatAndServ = (Button) findViewById(R.id.add_materials_and_services);
+        btnAddMatAndServ.setOnClickListener(this);
 
-        btn_write_off_of_materials = (Button) findViewById(R.id.write_off_of_materials);
-        btn_write_off_of_materials.setOnClickListener(this);
+        btnWriteOffOfMaterials = (Button) findViewById(R.id.write_off_of_materials);
+        btnWriteOffOfMaterials.setOnClickListener(this);
 
-        btn_osv = (Button) findViewById(R.id.osv);
-        btn_osv.setOnClickListener(this);
+        btnOsv = (Button) findViewById(R.id.osv);
+        btnOsv.setOnClickListener(this);
 
 
     }
@@ -43,20 +43,20 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_counterparty:
-                Intent intent = new Intent(this, CounterpartiesMenu.class);
-                startActivity(intent);
+                Intent intentCou = new Intent(this, CounterpartiesMenu.class);
+                startActivity(intentCou);
                 break;
             case R.id.add_materials_and_services:
-                Intent intent2 = new Intent(this, AddMatetialsAndServices.class);
-                startActivity(intent2);
+                Intent intentMatAndServ = new Intent(this, AddMaterialsAndServices.class);
+                startActivity(intentMatAndServ);
                 break;
             case R.id.write_off_of_materials:
-                Intent intent3 = new Intent(this, WriteOffMat.class);
-                startActivity(intent3);
+                Intent intentWriteOffMat = new Intent(this, WriteOffMat.class);
+                startActivity(intentWriteOffMat);
                 break;
             case R.id.osv:
-                Intent intent4 = new Intent(this, OSV.class);
-                startActivity(intent4);
+                Intent intentOSV = new Intent(this, OSV.class);
+                startActivity(intentOSV);
                 break;
             default:
                 break;

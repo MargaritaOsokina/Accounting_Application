@@ -22,7 +22,7 @@
             android:name=".WriteOffMat"
             android:exported="false" />
         <activity
-            android:name=".AddMatetialsAndServices"
+            android:name=".AddMaterialsAndServices"
             android:exported="false" />
         <activity
             android:name=".MainActivity2"

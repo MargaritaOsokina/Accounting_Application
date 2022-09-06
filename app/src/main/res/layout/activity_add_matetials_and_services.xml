@@ -17,8 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/calendarView1"
         android:layout_centerHorizontal="true"
-
-        android:text="Выберите дату" />
+        />
 
     <TextView
         android:id="@+id/textCou"
@@ -41,7 +40,7 @@
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"></EditText>
+        ></EditText>
 
     <TextView
         android:id="@+id/textNaim"
@@ -53,7 +52,7 @@
         android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"></EditText>
+        ></EditText>
 
 
     <TextView
@@ -111,20 +110,10 @@
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add">
+            android:text="Добавить">
         </Button>
-        <Button
-            android:id="@+id/btnRead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Read">
-        </Button>
-        <Button
-            android:id="@+id/btnClear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clear">
-        </Button>
+
+
     </LinearLayout>
 
 </LinearLayout>
