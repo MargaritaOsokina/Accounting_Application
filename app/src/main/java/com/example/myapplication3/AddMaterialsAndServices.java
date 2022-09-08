@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import static com.example.myapplication3.DBHelper.KEY_CO;
 import static com.example.myapplication3.DBHelper.KEY_DEB;
@@ -96,7 +97,7 @@ public class AddMaterialsAndServices extends AppCompatActivity implements View.O
 
     }
 
-    private void setupSpinner() {
+    public void setupSpinner() {
 
         ArrayAdapter genderSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_gender_options, android.R.layout.simple_spinner_item);
@@ -122,7 +123,7 @@ public class AddMaterialsAndServices extends AppCompatActivity implements View.O
 
         spinnerNDS.setOnItemSelectedListener(itemSelectedListener);
     }
-    private void setupSpinnerSch() {
+    public void setupSpinnerSch() {
 
         ArrayAdapter SchSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_account_options, android.R.layout.simple_spinner_item);
@@ -184,7 +185,7 @@ public class AddMaterialsAndServices extends AppCompatActivity implements View.O
 
             }
 
-            @Override
+           // @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         };
@@ -195,11 +196,17 @@ public class AddMaterialsAndServices extends AppCompatActivity implements View.O
     @Override
     public void onClick(View view) {
 
+        double NDSprice;
+
         String name = etName.getText().toString();
         String number = etNumber.getText().toString();
         String date = mDisplayDate.getText().toString();
         String sum = editTextSum.getText().toString();
         String price = editTextPrice.getText().toString();
+if (Objects.equals(itemNDS,"20%")){
+     NDSprice = (Integer.valueOf(price))*1.2;
+}else NDSprice = Integer.valueOf(price);
+
 
 
         SQLiteDatabase database=dbHelper2.getWritableDatabase();
@@ -220,7 +227,7 @@ public class AddMaterialsAndServices extends AppCompatActivity implements View.O
                     contentValues.put(DBHelper.KEY_NUMBER, number);
                     contentValues.put(DBHelper.KEY_DATE, date);
                     contentValues.put(DBHelper.KEY_SUM, sum);
-                    contentValues.put(DBHelper.KEY_PRICE, price);
+                    contentValues.put(DBHelper.KEY_PRICE, NDSprice);
                     contentValues.put(DBHelper.KEY_NDS, itemSch);
                     contentValues.put(DBHelper.KEY_ACCOUNT, itemNDS);
 
@@ -229,12 +236,13 @@ public class AddMaterialsAndServices extends AppCompatActivity implements View.O
                     userCursor = db.rawQuery("select * from " + TABLE_COUNTERPARTIES + " where " +
                             KEY_CO2 + "=?", new String[]{itemK});
                     userCursor.moveToFirst();
+
+
                     int debColumnIndex = userCursor.getColumnIndex(KEY_DEB);
                     String currentDeb = userCursor.getString(debColumnIndex);
-
-
                     ContentValues cv = new ContentValues();
-                    cv.put("debit", Integer.valueOf(currentDeb) + (Integer.valueOf(sum) * Integer.valueOf(price)));
+
+                        cv.put("debit", Double.valueOf(currentDeb) + (Double.valueOf(sum) * NDSprice));
 
                     // обновляем по TABLE_CONTACTS3
                     db.update("allCounterparties", cv, "co2 = ?",

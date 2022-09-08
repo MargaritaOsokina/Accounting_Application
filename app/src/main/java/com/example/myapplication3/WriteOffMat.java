@@ -22,12 +22,12 @@ import static com.example.myapplication3.DBHelper.KEY_SUM;
 public class WriteOffMat extends AppCompatActivity {
 
 
-    ListView userList;
-    DBHelper databaseHelper;
-    SQLiteDatabase db;
-    Cursor userCursor;
-    SimpleCursorAdapter userAdapter;
-    SimpleCursorAdapter userAdapter2;
+    private ListView userList;
+    private DBHelper databaseHelper;
+    private SQLiteDatabase db;
+    private Cursor userCursor;
+    private SimpleCursorAdapter userAdapter;
+   // private SimpleCursorAdapter userAdapter2;
 
 
     @Override
@@ -62,6 +62,8 @@ public class WriteOffMat extends AppCompatActivity {
         userAdapter = new SimpleCursorAdapter(this, R.layout.four,
                 userCursor, headers, new int[]{R.id.text_date,R.id.text_mail,R.id.text_sum,R.id.text_price}, 0);
         userList.setAdapter(userAdapter);
+
+
         //String[] info = {"дата","наименование","количество","стоимость"};
         //userAdapter = new SimpleCursorAdapter(this, R.layout.four,
           //      userCursor, info, new int[]{R.id.text_date,R.id.text_mail,R.id.text_sum,R.id.text_price}, 0);
@@ -73,10 +75,10 @@ public class WriteOffMat extends AppCompatActivity {
     }
 
     // по нажатию на кнопку запускаем UserActivity для добавления данных
-    public void add(View view) {
-        Intent intent = new Intent(this, SecondScreenWOM.class);
-        startActivity(intent);
-    }
+   // public void add(View view) {
+   //     Intent intent = new Intent(this, SecondScreenWOM.class);
+    //    startActivity(intent);
+   // }
 
     @Override
     public void onDestroy() {

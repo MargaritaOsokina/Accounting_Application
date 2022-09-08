@@ -11,10 +11,10 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity implements OnClickListener{
 
 
-    Button btnAddCount;
-    Button btnAddMatAndServ;
-    Button btnWriteOffOfMaterials;
-    Button btnOsv;
+    private Button btnAddCount;
+    private Button btnAddMatAndServ;
+    private Button btnWriteOffOfMaterials;
+    private Button btnOsv;
 
 
     /** Called when the activity is first created. */

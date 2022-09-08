@@ -15,21 +15,21 @@ import android.widget.EditText;
 public class MainActivity2 extends AppCompatActivity {
 
 
-    EditText nameBox;
-    DBHelper dbHelper2;
-    Button delButton;
-    Button saveButton;
-    DBHelper sqlHelper;
-    SQLiteDatabase db;
-    Cursor userCursor;
-    long userId=0;
+    private EditText nameBox;
+    private DBHelper dbHelper2;
+    //private Button delButton;
+    private Button saveButton;
+    private DBHelper sqlHelper;
+    private SQLiteDatabase db;
+    private Cursor userCursor;
+    private long userId=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
         nameBox = findViewById(R.id.name);
-        delButton = findViewById(R.id.deleteButton);
+        //delButton = findViewById(R.id.deleteButton);
         saveButton = findViewById(R.id.saveButton);
 
         sqlHelper = new DBHelper(this);
@@ -49,7 +49,7 @@ public class MainActivity2 extends AppCompatActivity {
             userCursor.close();
         } else {
             // скрываем кнопку удаления
-            delButton.setVisibility(View.GONE);
+            //delButton.setVisibility(View.GONE);
         }
     }
 
@@ -62,12 +62,12 @@ public class MainActivity2 extends AppCompatActivity {
         if (cursor.moveToFirst()){
             int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID2);
             int nameIndex = cursor.getColumnIndex(DBHelper.KEY_CO2);
-            int emailIndex = cursor.getColumnIndex(DBHelper.KEY_DEB);
+            int numberIndex = cursor.getColumnIndex(DBHelper.KEY_DEB);
             int dateIndex = cursor.getColumnIndex(DBHelper.KEY_CRED);
 
 
             do {
-                Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", deb - " + cursor.getString(emailIndex)+ ", cred = " + cursor.getString(dateIndex)
+                Log.d("mLog", "ID = " + cursor.getInt(idIndex) + ", name - " + cursor.getString(nameIndex) + ", deb - " + cursor.getString(numberIndex)+ ", cred = " + cursor.getString(dateIndex)
                        );
             } while (cursor.moveToNext());
         }else

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 
 import static com.example.myapplication3.DBHelper.KEY_CRED;
@@ -17,10 +18,10 @@ import static com.example.myapplication3.DBHelper.TABLE_COUNTERPARTIES;
 
 public class OSV extends AppCompatActivity {
 
-    ListView userList;
-    DBHelper databaseHelper;
-    SQLiteDatabase db;
-    Cursor userCursor;
+   private ListView userList;
+    private DBHelper databaseHelper;
+    private SQLiteDatabase db;
+    private Cursor userCursor;
 
     SimpleCursorAdapter userAdapter;
     @Override
@@ -29,14 +30,14 @@ public class OSV extends AppCompatActivity {
         setContentView(R.layout.activity_osv);
 
         userList = findViewById(R.id.list);
-        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), OSV.class);
-                intent.putExtra("id", id);
-                startActivity(intent);
-            }
-        });
+      //  userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           // @Override
+         //   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+          //      Intent intent = new Intent(getApplicationContext(), OSV.class);
+          //      intent.putExtra("id", id);
+           //     startActivity(intent);
+           // }
+       // });
 
         databaseHelper = new DBHelper(getApplicationContext());
     }
@@ -50,18 +51,21 @@ public class OSV extends AppCompatActivity {
         //получаем данные из бд в виде курсора
         userCursor = db.rawQuery("select * from " + TABLE_COUNTERPARTIES, null);
         // определяем, какие столбцы из курсора будут выводиться в ListView
-        String[] headers = new String[]{DBHelper.KEY_CO2,KEY_DEB,KEY_CRED};
+        String[] headers = new String[]{DBHelper.KEY_CO2, KEY_DEB, KEY_CRED};
         // создаем адаптер, передаем в него курсор
         userAdapter = new SimpleCursorAdapter(this, R.layout.three,
-                userCursor, headers, new int[]{R.id.text_view_member_id,R.id.text_view_name,R.id.text_view_phone}, 0);
+                userCursor, headers, new int[]{R.id.text_view_member_id, R.id.text_view_name, R.id.text_view_phone}, 0);
         userList.setAdapter(userAdapter);
-           }
+
+
+    }
+
 
     // по нажатию на кнопку запускаем UserActivity для добавления данных
-    public void add(View view) {
-        Intent intent = new Intent(this, OSV.class);
-        startActivity(intent);
-    }
+   // public void add(View view) {
+   //     Intent intent = new Intent(this, OSV.class);
+   //     startActivity(intent);
+    //}
 
     @Override
     public void onDestroy() {

@@ -18,13 +18,13 @@ import static com.example.myapplication3.DBHelper.TABLE_COUNTERPARTIES;
 public class SecondScreenWOM extends AppCompatActivity {
 
 
-    TextView nameBox;
-    Button delButton;
-    DBHelper sqlHelper;
-    SQLiteDatabase db;
-    Cursor userCursor;
-    Cursor userCursorMat;
-    Cursor userCursorCou;
+    private TextView nameBox;
+    private Button delButton;
+    private DBHelper sqlHelper;
+    private SQLiteDatabase db;
+    private Cursor userCursor;
+    private Cursor userCursorMat;
+    private Cursor userCursorCou;
 
     long userId=0;
 
@@ -103,7 +103,7 @@ public class SecondScreenWOM extends AppCompatActivity {
 
         // подготовим значения для обновления
         ContentValues cv = new ContentValues();
-        cv.put("credit", Integer.valueOf(currentCred)+(Integer.valueOf(currentSum)*Integer.valueOf(currentPrice)));
+        cv.put("credit", Double.valueOf(currentCred)+(Double.valueOf(currentSum)*Double.valueOf(currentPrice)));
 
         // обновляем по TABLE_CONTACTS3
         db.update("allCounterparties", cv, "co2 = ?",
