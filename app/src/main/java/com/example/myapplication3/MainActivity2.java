@@ -104,7 +104,7 @@ public class MainActivity2 extends AppCompatActivity {
         // закрываем подключение
         db.close();
         // переход к главной activity
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, CounterpartiesMenu.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }

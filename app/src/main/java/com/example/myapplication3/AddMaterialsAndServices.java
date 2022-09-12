@@ -203,9 +203,7 @@ public class AddMaterialsAndServices extends AppCompatActivity implements View.O
         String date = mDisplayDate.getText().toString();
         String sum = editTextSum.getText().toString();
         String price = editTextPrice.getText().toString();
-if (Objects.equals(itemNDS,"20%")){
-     NDSprice = (Integer.valueOf(price))*1.2;
-}else NDSprice = Integer.valueOf(price);
+
 
 
 
@@ -222,6 +220,11 @@ if (Objects.equals(itemNDS,"20%")){
                     Toast.makeText(AddMaterialsAndServices.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
 
                 }else {
+                    Toast.makeText(AddMaterialsAndServices.this, "Товары или услуги добавлены", Toast.LENGTH_SHORT).show();
+
+                    if (Objects.equals(itemNDS,"20%")){
+                        NDSprice = (Integer.valueOf(price))*1.2;
+                    }else NDSprice = Integer.valueOf(price);
                     contentValues.put(KEY_NAME, name);
                     contentValues.put(KEY_CO, String.valueOf(itemK));
                     contentValues.put(DBHelper.KEY_NUMBER, number);
@@ -247,7 +250,7 @@ if (Objects.equals(itemNDS,"20%")){
                     // обновляем по TABLE_CONTACTS3
                     db.update("allCounterparties", cv, "co2 = ?",
                             new String[]{itemK});
-                    goHome();
+                   // goHome();
                 }
                 break;
 /*
@@ -280,7 +283,7 @@ if (Objects.equals(itemNDS,"20%")){
 database.delete(DBHelper.TABLE_MAT,null,null);
                 break;*/
         }
-        dbHelper2.close();
+        //dbHelper2.close();
     }
     private void goHome(){
         // закрываем подключение
